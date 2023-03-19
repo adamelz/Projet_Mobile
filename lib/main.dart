@@ -29,7 +29,7 @@ class _LoginDemoState extends State<LoginDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 class MyLikesPage extends StatefulWidget {
   @override
   _MyLikesPageState createState() => _MyLikesPageState();
@@ -18,16 +18,14 @@ class _MyLikesPageState extends State<MyLikesPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.favorite_border,
-            size: 48.0,
-            color: Colors.red,
-          ),
-          SizedBox(height: 16.0),
+           SvgPicture.asset('assets/icons/empty_likes.svg'),
+
+
+          SizedBox(height: 50.0),
           Text(
-            "Vous n'avez encore pas liké de contenu. Cliquez sur le cœur pour en rajouter",
+            "Vous n'avez encore pas liké de contenu.\n Cliquez sur le cœur pour en rajouter",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: 16.0, color: Colors.white,fontFamily:'Proxima'),
           ),
         ],
       ),

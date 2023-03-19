@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Gamedetail.dart';
+import 'package:projetmobile/screens/Mes likes.dart';
+import 'package:projetmobile/screens/Wishlist.dart';
+import 'package:projetmobile/screens/Wishlist.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,11 +23,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: SvgPicture.asset('assets/icons/like.svg'),
-            onPressed: () {},
+            onPressed: ()  { Navigator.push(
+                context, MaterialPageRoute(builder: (_) => MyLikesPage()));},
           ),
           IconButton(
             icon: SvgPicture.asset('assets/icons/whishlist.svg'),
-            onPressed: () {},
+            onPressed: () { Navigator.push(
+                context, MaterialPageRoute(builder: (_) => MyWishlist()));},
           ),
         ],
       ),
@@ -33,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Rechercher un jeu...",
-                hintStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(color: Colors.white,fontFamily:'Proxima'),
                 suffixIcon: Icon(Icons.search, color: Colors.deepPurple,),
                 border: OutlineInputBorder(),
               ),
@@ -65,6 +72,7 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                  fontFamily:'Proxima'
               ),
             ),
           ),
@@ -94,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                         context, MaterialPageRoute(builder: (_) => GameDetail()));},
                     child: Text(
                       'En savoir plus',textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
                     ),
                   ),
                 )

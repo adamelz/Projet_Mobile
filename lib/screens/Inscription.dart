@@ -16,7 +16,7 @@ class _InscriptionState extends State<Inscription> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
