@@ -55,13 +55,31 @@ class _HomePageState extends State<HomePage> {
           fit: BoxFit.cover,
         ),
       ),
-      child: ListTile(
-        title: Text("Nom du jeu",),textColor: Colors.white,
-        subtitle: Text("descritpion du jeu"),
-        trailing: Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg", scale: 2,),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Jeu XYZ",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'proxima',
+                color: Colors.white,
+              ),
+            ),
+            Text("Description du jeu en dur",style: TextStyle(fontFamily: 'proxima',
+              color: Colors.white,),),
+            Expanded(child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg",
+                height: 120,)
+              ],
+            ))
+          ],
+        ),
       ),
-    ),
-
 
           Padding(
             padding: const EdgeInsets.all(8.0),
