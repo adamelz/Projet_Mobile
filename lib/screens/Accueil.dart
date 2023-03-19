@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Gamedetail.dart';
 import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
-import 'package:projetmobile/screens/Wishlist.dart';
+
 
 class HomePage extends StatefulWidget {
   @override

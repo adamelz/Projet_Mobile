@@ -58,6 +58,10 @@ class _GameDetailState extends State<GameDetail> {
         image: DecorationImage(
           image: AssetImage("assets/images/img_1.png"),
           fit: BoxFit.cover,
+          colorFilter: const ColorFilter.mode(
+            Colors.grey,
+            BlendMode.darken,
+          ),
         ),
       ),
     margin: EdgeInsets.all(16),
@@ -78,10 +82,14 @@ class _GameDetailState extends State<GameDetail> {
     style: TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
+      fontFamily: 'proxima',
+      color: Colors.white,
     ),
     ),
-    Text("Editeur ABC"),
-    Text("No 123"),
+    Text("Editeur ABC",style: TextStyle(fontFamily: 'proxima',
+      color: Colors.white,),),
+    Text("No 123",style: TextStyle(fontFamily: 'proxima',
+      color: Colors.white,),),
     ],
     ),
     ),
