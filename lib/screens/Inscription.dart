@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Accueil.dart';
 import 'package:projetmobile/screens/Inscription.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class Inscription extends StatefulWidget {
   @override
@@ -52,7 +55,8 @@ class _InscriptionState extends State<Inscription> {
                 //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
                 padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
-
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
@@ -75,6 +79,8 @@ class _InscriptionState extends State<Inscription> {
                   //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
                   padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
@@ -96,6 +102,8 @@ class _InscriptionState extends State<Inscription> {
         //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
         padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
@@ -118,6 +126,8 @@ class _InscriptionState extends State<Inscription> {
         //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
         padding: EdgeInsets.symmetric(horizontal: 25),
              child: TextFormField(
+               textAlign: TextAlign.center,
+               style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
@@ -145,9 +155,45 @@ class _InscriptionState extends State<Inscription> {
                 decoration: BoxDecoration(
                     color: Color(0xFF636af6), borderRadius: BorderRadius.circular(5)),
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => HomePage()));
+                  onPressed: () async {
+                    /*Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => HomePage()));*/
+                    final form = _formKey.currentState;
+                    final _auth = FirebaseAuth.instance;
+
+                    if (form!.validate()) {
+                      form.save();
+                      try {
+                        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                          email: _email!,
+                          password: _password!,
+                        );
+
+                        final User? user = FirebaseAuth.instance.currentUser;
+                        if (user != null) {
+                          UserCredential userCredential =
+                          await _auth.createUserWithEmailAndPassword(
+                            email: _email!,
+                            password: _password!,
+                          );
+                          print('User ${userCredential.user?.uid} created');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => HomePage()),
+                          );
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => HomePage()),
+                        );
+                      } on FirebaseAuthException catch (e) { // Utilisation d'un bloc catch spécifique
+                        print(e.message);
+                      } catch (e) {
+                        print(e.toString());
+                      }
+                    }
+
+
                   },
                   child: Text(
                     "S'inscrire",
@@ -160,3 +206,5 @@ class _InscriptionState extends State<Inscription> {
         ),
       );
   }}
+
+
