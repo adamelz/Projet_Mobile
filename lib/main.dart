@@ -54,7 +54,7 @@ class _LoginDemoState extends State<LoginDemo> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // create user if not found
-       /* UserCredential userCredential =
+        UserCredential userCredential =
         await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -63,7 +63,7 @@ class _LoginDemoState extends State<LoginDemo> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => HomePage()),
-        );*/
+        );
 
         print('Utilisateur inconnue');
       } else if (e.code == 'wrong-password') {
@@ -85,7 +85,24 @@ class _LoginDemoState extends State<LoginDemo> {
         ),
         child: Column(
           children: <Widget>[
-            // ...
+            Padding(
+              padding: const EdgeInsets.only(top:80.0),
+              child: Center(
+                child: Container(
+                    width: 200,
+                    height: 50,
+                    /*decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50.0)),*/
+                    child: Text('Bienvenue !',textAlign: TextAlign.center,style: TextStyle(fontFamily:'Proxima',fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),)),
+
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(),
+              child: Center(
+                  child: Text("Veuillez vous connecter ou\n créer un nouveau compte\n pour utiliser l'application. ",textAlign: TextAlign.center,style: TextStyle(fontFamily:'Proxima',color: Colors.white),)),
+            ),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
