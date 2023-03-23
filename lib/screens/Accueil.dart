@@ -70,18 +70,17 @@ class _HomePageState extends State<HomePage> {
             ),
             Text("Description du jeu en dur",style: TextStyle(fontFamily: 'proxima',
               color: Colors.white,),),
-            Expanded(child: Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg",
                 height: 120,)
               ],
-            ))
+            )
           ],
         ),
       ),
-
-          Padding(
+            Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "Meilleures ventes",
