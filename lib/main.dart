@@ -1,31 +1,85 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projetmobile/models/user.dart';
 import 'package:projetmobile/screens/Accueil.dart';
 import 'package:projetmobile/screens/Inscription.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-void main() async {
+Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
 
+  // final games = await fetchMostPlayedGames();
+  // await fetchAppDetails(games);
+
   runApp(MyApp());
 }
 
+
+
+Future<String> fetchMostPlayedGames() async {
+  final response = await http.get(Uri.parse('https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/'));
+  if (response.statusCode == 200) {
+    final decoded = json.decode(response.body);
+    final games = decoded['response']['ranks'];
+    //return games;
+    return games.map<String>((item) async => item['appid'] as String).toList();
+
+  } else {
+    throw Exception('Failed to load most played games');
+  }
+}
+
+Future<Map<String, dynamic>> fetchAppDetails(String appId) async {
+  final response = await http.get(Uri.parse('https://store.steampowered.com/api/appdetails?appids=$appId'));
+  if (response.statusCode == 200) {
+    final decoded = json.decode(response.body);
+    final infos = decoded[appId]['data'];
+    return infos.map((item) async =>
+
+    await FirebaseFirestore.instance.collection('games').doc(appId).set({
+      /*'name': item['name'].text,
+      'image': item['header_image'].text,
+      'background': item['background'].text,
+      'developers': item['developers'].text,*/
+
+      'name': "test",
+      'image': "test",
+      'background': "test",
+      'developers': "test",
+    }));
+
+  } else {
+    throw Exception('Failed to load app details');
+  }
+}
+
+
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Custom Fonts',
-      theme: ThemeData(fontFamily: 'Proxima'),
-      debugShowCheckedModeBanner: false,
-      home: LoginDemo(),
-    );
+        home: LoginDemo(),
+          title: 'Custom Fonts',
+          theme: ThemeData(fontFamily: 'Proxima'),
+          debugShowCheckedModeBanner: false,
+          
+      );
+
   }
 }
+
 
 class LoginDemo extends StatefulWidget {
   @override
@@ -33,7 +87,9 @@ class LoginDemo extends StatefulWidget {
 }
 
 class _LoginDemoState extends State<LoginDemo> {
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
+  bool showSignIn = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -54,7 +110,7 @@ class _LoginDemoState extends State<LoginDemo> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // create user if not found
-        UserCredential userCredential =
+       /* UserCredential userCredential =
         await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -63,7 +119,7 @@ class _LoginDemoState extends State<LoginDemo> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => HomePage()),
-        );
+        );*/
 
         print('Utilisateur inconnue');
       } else if (e.code == 'wrong-password') {
@@ -150,8 +206,12 @@ class _LoginDemoState extends State<LoginDemo> {
                   color: Color(0xFF636af6),
                   borderRadius: BorderRadius.circular(5)),
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   _handleSignIn();
+
+                  final games = await fetchMostPlayedGames();
+                  await fetchAppDetails(games);
+
                 },
                 child: Text(
                   'Se connecter',
