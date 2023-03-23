@@ -76,9 +76,24 @@ class _HomePageState extends State<HomePage> {
                 Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg",
                 height: 120,)
               ],
-            )
+            ),
+      Container(
+        height: 30,
+        width: 150,
+        decoration: BoxDecoration(
+            color: Color(0xFF636af6), borderRadius: BorderRadius.circular(2)),
+        child:TextButton(
+              onPressed: () { Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => GameDetail()));},
+              child: Text(
+                'En savoir plus',textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
+              ),
+            ),
+      ),
           ],
         ),
+
       ),
             Padding(
             padding: const EdgeInsets.all(8.0),
