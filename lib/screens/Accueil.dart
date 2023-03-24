@@ -54,55 +54,64 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-    Container(
-      height: 200.0,
-      width: 420.0,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/img.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Jeu XYZ",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'proxima',
-                color: Colors.white,
+          Container(
+            height: 240.0,
+            width: 420.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/img.png'),
+                fit: BoxFit.cover,
               ),
             ),
-            Text("Description du jeu en dur",style: TextStyle(fontFamily: 'proxima',
-              color: Colors.white,),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg",
-                height: 120,)
-              ],
-            ),
-      Container(
-        height: 30,
-        width: 150,
-        decoration: BoxDecoration(
-            color: Color(0xFF636af6), borderRadius: BorderRadius.circular(2)),
-        child:TextButton(
-              onPressed: () { Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => GameDetail()));},
-              child: Text(
-                'En savoir plus',textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'jeu xyz',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'description du jeu',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () { Navigator.push(
+    context, MaterialPageRoute(builder: (_) => GameDetail()));},
+                    child: Text(
+                      'En savoir plus',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xFF636af6),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        'https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg',
+                        width: 100,
+                        height: 100,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-      ),
-          ],
-        ),
-
-      ),
+          ),
             Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
