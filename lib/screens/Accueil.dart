@@ -99,7 +99,6 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "Meilleures ventes",
-              textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
