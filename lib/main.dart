@@ -7,6 +7,7 @@ import 'package:projetmobile/screens/Accueil.dart';
 import 'package:projetmobile/screens/Inscription.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projetmobile/services/api_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:http/http.dart' as http;
@@ -19,63 +20,22 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
 
-  // final games = await fetchMostPlayedGames();
-  // await fetchAppDetails(games);
+  await fetchData2();
 
   runApp(MyApp());
 }
-
-
-
-Future<String> fetchMostPlayedGames() async {
-  final response = await http.get(Uri.parse('https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/'));
-  if (response.statusCode == 200) {
-    final decoded = json.decode(response.body);
-    final games = decoded['response']['ranks'];
-    //return games;
-    return games.map<String>((item) async => item['appid'] as String).toList();
-
-  } else {
-    throw Exception('Failed to load most played games');
-  }
-}
-
-Future<Map<String, dynamic>> fetchAppDetails(String appId) async {
-  final response = await http.get(Uri.parse('https://store.steampowered.com/api/appdetails?appids=$appId'));
-  if (response.statusCode == 200) {
-    final decoded = json.decode(response.body);
-    final infos = decoded[appId]['data'];
-    return infos.map((item) async =>
-
-    await FirebaseFirestore.instance.collection('games').doc(appId).set({
-      /*'name': item['name'].text,
-      'image': item['header_image'].text,
-      'background': item['background'].text,
-      'developers': item['developers'].text,*/
-
-      'name': "test",
-      'image': "test",
-      'background': "test",
-      'developers': "test",
-    }));
-
-  } else {
-    throw Exception('Failed to load app details');
-  }
-}
-
 
 class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: LoginDemo(),
-          title: 'Custom Fonts',
-          theme: ThemeData(fontFamily: 'Proxima'),
-          debugShowCheckedModeBanner: false,
-          
-      );
+      home: LoginDemo(),
+      title: 'Custom Fonts',
+      theme: ThemeData(fontFamily: 'Proxima'),
+      debugShowCheckedModeBanner: false,
+
+    );
 
   }
 }
@@ -87,6 +47,7 @@ class LoginDemo extends StatefulWidget {
 }
 
 class _LoginDemoState extends State<LoginDemo> {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   bool showSignIn = true;
@@ -109,18 +70,6 @@ class _LoginDemoState extends State<LoginDemo> {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        // create user if not found
-       /* UserCredential userCredential =
-        await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        print('User ${userCredential.user?.uid} created');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => HomePage()),
-        );*/
-
         print('Utilisateur inconnue');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
@@ -208,9 +157,6 @@ class _LoginDemoState extends State<LoginDemo> {
               child: TextButton(
                 onPressed: () async {
                   _handleSignIn();
-
-                  final games = await fetchMostPlayedGames();
-                  await fetchAppDetails(games);
 
                 },
                 child: Text(

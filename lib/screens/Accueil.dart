@@ -9,6 +9,8 @@ import 'package:projetmobile/screens/Wishlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../services/api_service.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -41,6 +43,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+
+
+
       body: Column(
         children: [
           Padding(
@@ -88,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 8),
                   TextButton(
                     onPressed: () { Navigator.push(
-    context, MaterialPageRoute(builder: (_) => GameDetail()));},
+                        context, MaterialPageRoute(builder: (_) => GameDetail()));},
                     child: Text(
                       'En savoir plus',
                       style: TextStyle(color: Colors.white),
@@ -112,53 +117,99 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-            Padding(
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "Meilleures ventes",
               style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                   fontFamily:'Proxima'
               ),
             ),
           ),
+
+
           Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 44,
-                      minHeight: 44,
-                      maxWidth: 64,
-                      maxHeight: 64,
-                    ),
-                    child: Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg", fit: BoxFit.cover),
-                  ),
-                  title: Text("Nom du jeu \nNom de l'éditeur"),textColor: Colors.white,
-                  subtitle: Text("Prix:\$10"),
-                  trailing: Container(
-                height: 70,
-                width: 75,
-                decoration: BoxDecoration(
-                color: Color(0xFF636af6), borderRadius: BorderRadius.circular(2)),
-                child:TextButton(
-                    onPressed: () { Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => GameDetail()));},
-                    child: Text(
-                      'En savoir plus',textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
-                    ),
-                  ),
-                )
-                );
+            child: FutureBuilder(
+              future: fetchData2(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance.collection('games').snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final games = snapshot.data!.docs.map((doc) => doc.data()).toList();
+                        return ListView.builder(
+                          itemCount: games.length,
+                          itemBuilder: (context, index) {
+                            final game = games[index];
+                            return ListTile(
+                                leading: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minWidth: 44,
+                                    minHeight: 44,
+                                    maxWidth: 64,
+                                    maxHeight: 64,
+                                  ),
+
+
+
+                                  //child: Image.network( game['image'], fit: BoxFit.cover),
+                                  child: Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg", fit: BoxFit.cover),
+
+
+
+                                ),
+
+
+
+                                // title: Text(game['name'] + '\n' + game['developer']),textColor: Colors.white,
+                                title: Text("Nom du jeu \nNom de l'éditeur"),textColor: Colors.white,
+
+
+
+                                subtitle: Text("Prix: 10e"),
+                                trailing: Container(
+                                  height: 70,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF636af6), borderRadius: BorderRadius.circular(2)),
+                                  child: TextButton(
+                                    onPressed: () { Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => GameDetail()));},
+                                    child: Text(
+                                      'En savoir plus',textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
+                                    ),
+                                  ),
+                                )
+                            );
+
+                          },
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
               },
             ),
-          ),
+          )
+
+
+
+
+
+
+
+
         ],
       ),
+
     );
   }}
