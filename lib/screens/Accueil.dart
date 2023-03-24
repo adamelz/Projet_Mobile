@@ -1,10 +1,14 @@
 import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Gamedetail.dart';
 import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -13,8 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
