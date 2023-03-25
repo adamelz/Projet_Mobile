@@ -181,14 +181,14 @@ class _GameDetailState extends State<GameDetail> {
                         padding: EdgeInsets.all(16),
                         child: Text(
                           gameDescription ?? "Description",
-                          style: TextStyle(color: Colors.white,),
+                          style: TextStyle(color: Colors.white,fontFamily:'Proxima'),
                         ),
                       ),
                       SingleChildScrollView(
                         padding: EdgeInsets.all(16),
                         child: Text(
                           "Sed suscipit bibendum turpis, non eleifend enim malesuada vel. Vivamus nec mauris nec sem sollicitudin pharetra a a eros. Nam bibendum, lectus vel bibendum faucibus, ex purus commodo massa, ac maximus quam mi eu",
-                          style: TextStyle(color: Colors.white,),),
+                          style: TextStyle(color: Colors.white,fontFamily:'Proxima'),),
                       ),
                     ]
                 )

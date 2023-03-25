@@ -121,7 +121,7 @@ class _LoginDemoState extends State<LoginDemo> {
                   label: const Center(
                     child: Text(
                       "E-mail",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(fontFamily:'Proxima',color: Colors.white),
                     ),
                   ),
                 ),
@@ -141,7 +141,7 @@ class _LoginDemoState extends State<LoginDemo> {
                   label: const Center(
                     child: Text(
                       "Mot de passe",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(fontFamily:'Proxima',color: Colors.white),
                     ),
                   ),
                 ),
@@ -161,7 +161,7 @@ class _LoginDemoState extends State<LoginDemo> {
                 },
                 child: Text(
                   'Se connecter',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(fontFamily:'Proxima',color: Colors.white, fontSize: 15),
                 ),
               ),
             ),
@@ -180,7 +180,7 @@ class _LoginDemoState extends State<LoginDemo> {
                 },
                 child: Text(
                   'Créer un nouveau compte',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(fontFamily:'Proxima',color: Colors.white, fontSize: 15),
                 ),
               ),
             ),

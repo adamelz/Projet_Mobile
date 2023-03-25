@@ -106,7 +106,7 @@ class _InscriptionState extends State<Inscription> {
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
-                    child: Text("Nom d'utilisateur",style: TextStyle(color: Colors.white),),
+                    child: Text("Nom d'utilisateur",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
                   ),
                 ),
                 validator: (String? value) {
@@ -131,7 +131,7 @@ class _InscriptionState extends State<Inscription> {
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
-                    child: Text("E-mail",style: TextStyle(color: Colors.white),),
+                    child: Text("E-mail",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
                   ),
                 ),
                 validator: (String? value) {
@@ -155,7 +155,7 @@ class _InscriptionState extends State<Inscription> {
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
-                    child: Text("Mot de passe",style: TextStyle(color: Colors.white),),
+                    child: Text("Mot de passe",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
                   ),
                 ),
                 obscureText: true,
@@ -179,7 +179,7 @@ class _InscriptionState extends State<Inscription> {
                   filled: true, //<-- SEE HERE
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
-                    child: Text("Vérification du mot de passe",style: TextStyle(color: Colors.white),),
+                    child: Text("Vérification du mot de passe",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
                   ),
                 ),
                 obscureText: true,
@@ -215,7 +215,7 @@ class _InscriptionState extends State<Inscription> {
                 },
                 child: Text(
                   "S'inscrire",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(fontFamily:'Proxima',color: Colors.white, fontSize: 15),
                 ),
               ),
             ),
