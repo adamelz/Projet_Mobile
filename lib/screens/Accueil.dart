@@ -60,11 +60,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            height: 240.0,
+            height: 270.0,
             width: 420.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/img.png'),
+                image: NetworkImage('https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/clans/3381077/88695ecb1922d1881ba9ba14d193a0939a7946e6.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -72,10 +72,10 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
                   Text(
-                    'jeu xyz',
+                    'CS: GO',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'description du jeu',
+                    "CS:GO fête son 10ème \n anniversaire !",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        'https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg',
+                        'https://cdn.cdkeys.com/700x700/media/catalog/product/c/s/cs-go.jpg',
                         width: 100,
                         height: 100,
                       ),
@@ -119,15 +119,18 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
+            child: Align(alignment: Alignment.centerLeft,
             child: Text(
-              "Meilleures ventes",
+              "Meilleures ventes", textAlign: TextAlign.left,
               style: TextStyle(
+                  decoration: TextDecoration.underline,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   fontFamily:'Proxima'
               ),
             ),
+          ),
           ),
 
           Expanded(
