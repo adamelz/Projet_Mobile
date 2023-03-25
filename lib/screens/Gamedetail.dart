@@ -1,12 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GameDetail extends StatefulWidget {
+  final String appId;
+
+  GameDetail({required this.appId});
+
   @override
   _GameDetailState createState() => _GameDetailState();
 }
 
 class _GameDetailState extends State<GameDetail> {
+
+  //////////////////////////////////////////////////////////////////
+  late Future<Map<String, dynamic>> gameDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    gameDataFuture = fetchGameData();
+  }
+
+  Future<Map<String, dynamic>> fetchGameData() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('games')
+        .where('appId', isEqualTo: widget.appId)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      return snapshot.docs.first.data() as Map<String, dynamic>;
+    } else {
+      throw Exception('Game data not found');
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////
+
   bool isLike = false;
   bool isWish = false;
 
@@ -39,6 +70,9 @@ class _GameDetailState extends State<GameDetail> {
     ),
     ],
     ),
+
+
+
     body: DefaultTabController(
     length: 2,
     child: NestedScrollView(
@@ -132,3 +166,5 @@ class _GameDetailState extends State<GameDetail> {
     );
   }
 }
+
+
