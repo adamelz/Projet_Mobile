@@ -196,7 +196,10 @@ class _InscriptionState extends State<Inscription> {
               ),
             ),
             SizedBox(height: 20.0),
-            Container(
+      Padding(
+        //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+        padding: EdgeInsets.symmetric(horizontal: 25),
+            child:Container(
               height: 50,
               width: 350,
               decoration: BoxDecoration(
@@ -216,6 +219,7 @@ class _InscriptionState extends State<Inscription> {
                 ),
               ),
             ),
+      ),
           ],
         ),
       ),
