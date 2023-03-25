@@ -130,7 +130,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-
           Expanded(
             child: FutureBuilder(
               future: fetchData2(),
@@ -170,8 +169,15 @@ class _HomePageState extends State<HomePage> {
                                       color: Color(0xFF636af6), borderRadius: BorderRadius.circular(2)
                                   ),
                                   child: TextButton(
-                                    onPressed: () { Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: game?['appId'])));},
+                                    onPressed: () {
+                                      /*Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: game?['appId'])));},*/
+
+                                          String? id = game?['appid'].toString();
+
+                                      Navigator.push(
+                                       context, MaterialPageRoute(builder: (_) => GameDetail(appId: id)));},
+
                                     child: Text(
                                       'En savoir plus',textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
@@ -193,12 +199,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           )
-
-
-
-
-
-
 
 
         ],

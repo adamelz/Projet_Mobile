@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GameDetail extends StatefulWidget {
-  final String appId;
+
+  late final String? appId;
 
   GameDetail({required this.appId});
 
@@ -12,32 +13,6 @@ class GameDetail extends StatefulWidget {
 }
 
 class _GameDetailState extends State<GameDetail> {
-
-  //////////////////////////////////////////////////////////////////
-  late Future<Map<String, dynamic>> gameDataFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    gameDataFuture = fetchGameData();
-  }
-
-  Future<Map<String, dynamic>> fetchGameData() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('games')
-        .where('appId', isEqualTo: widget.appId)
-        .limit(1)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      return snapshot.docs.first.data() as Map<String, dynamic>;
-    } else {
-      throw Exception('Game data not found');
-    }
-  }
-
-  //////////////////////////////////////////////////////////////////
-
   bool isLike = false;
   bool isWish = false;
 
@@ -53,116 +28,174 @@ class _GameDetailState extends State<GameDetail> {
     });
   }
   @override
-  Widget build(BuildContext context) {
+  /*Widget build(BuildContext context) {
+    CollectionReference gamesRef = FirebaseFirestore.instance.collection('games');
+
+    DocumentReference gameDocRef = gamesRef.doc('730');
+    String gameName = "C'est vide" ;
+    String gameImage = "Chargement en cours...";
+
+    gameDocRef.get().then((doc) {
+      if (doc != null && doc.exists) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          setState(() {
+            gameName = data['name'] ?? "";
+            gameImage = data['image'] ?? "";
+          });
+        }
+      }
+
+    }
+    );
+    print(gameName);*/
+
+    Widget build(BuildContext context) {
+      CollectionReference gamesRef = FirebaseFirestore.instance.collection('games');
+
+      //DocumentReference gameDocRef = gamesRef.doc('730');
+      DocumentReference gameDocRef = gamesRef.doc(widget.appId);
+      String gameName = "Chargement en cours..." ;
+      String gameImage = "Chargement en cours...";
+      String gameDescription = "Chargement en cours...";
+      String gameDev = "Chargement en cours...";
+
+      return FutureBuilder<DocumentSnapshot>(
+        future: gameDocRef.get(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Une erreur est survenue: ${snapshot.error}");
+          }
+
+         /* if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Chargement en cours...");
+          }*/
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text("Le document n'existe pas");
+          }
+
+          if (snapshot.hasData && snapshot.data!.exists) {
+            Map<String, dynamic>? data = snapshot.data!.data() as Map<String, dynamic>?;
+            if (data != null) {
+              gameName = data['name'] ?? "";
+              gameImage = data['image'] ?? "";
+              gameDescription = data['description'] ?? "";
+              gameDev = data['developer'] ?? "";
+            }
+          }
+
+
     return Scaffold(
         backgroundColor: Color(0xFF1E262C),
         appBar: AppBar(
           backgroundColor: Color(0xFF1E262C),
-        title: Text("Détail du jeu"),
-    actions: [
-        IconButton(
-        icon: isLike ? SvgPicture.asset('assets/icons/like_full.svg'):SvgPicture.asset('assets/icons/like.svg') ,
-      onPressed: toggleLike ,
-    ),
-    IconButton(
-    icon: isWish ? SvgPicture.asset('assets/icons/whishlist_full.svg'):SvgPicture.asset('assets/icons/whishlist.svg') ,
-    onPressed: toggleWish,
-    ),
-    ],
-    ),
-
-
-
-    body: DefaultTabController(
-    length: 2,
-    child: NestedScrollView(
-    headerSliverBuilder: (context, innerBoxIsScrolled) => [
-    SliverToBoxAdapter(
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-    Image.network(
-    "https://mobimg.b-cdn.net/v3/fetch/c5/c5e459323542642105ab322fa6d6060c.jpeg",
-    fit: BoxFit.cover,
-    height: 200,
-    ),
-    Container(
-
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/img_1.png"),
-          fit: BoxFit.cover,
-          colorFilter: const ColorFilter.mode(
-            Colors.grey,
-            BlendMode.darken,
-          ),
+          title: Text("Détail du jeu"),
+          actions: [
+            IconButton(
+              icon: isLike ? SvgPicture.asset('assets/icons/like_full.svg'):SvgPicture.asset('assets/icons/like.svg') ,
+              onPressed: toggleLike ,
+            ),
+            IconButton(
+              icon: isWish ? SvgPicture.asset('assets/icons/whishlist_full.svg'):SvgPicture.asset('assets/icons/whishlist.svg') ,
+              onPressed: toggleWish,
+            ),
+          ],
         ),
-      ),
-    margin: EdgeInsets.all(16),
-    child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Image.network(
-    "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
-    height: 100,
-    ),
-    SizedBox(width: 10),
-    Expanded(
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text(
-    "Jeu XYZ",
-    style: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-      fontFamily: 'proxima',
-      color: Colors.white,
-    ),
-    ),
-    Text("Editeur ABC",style: TextStyle(fontFamily: 'proxima',
-      color: Colors.white,),),
-    Text("No 123",style: TextStyle(fontFamily: 'proxima',
-      color: Colors.white,),),
-    ],
-    ),
-    ),
-    ],
-    ),
-    ),
-    TabBar(
-    tabs: [
-    Tab(
-    text: "Description",
-    ),
-    Tab(
-    text: "Avis",
-    ),
-    ],
-    ),
-    ],
-    ),
-    ),
-    ],
-    body: TabBarView(
-    children: [
-    SingleChildScrollView(
-    padding: EdgeInsets.all(16),
-    child: Text(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu risus gravida, vestibulum nulla vel, blandit nibh. Donec id nisi ut est bibendum malesuada. Nullam lobortis augue quis justo tincidunt, ac imperdiet arcu tristique. Integer eget mauris a sapien posuere sollicitudin. Proin ultrices ex eu felis tempor, vel malesuada nibh pellentesque. Sed eget nulla vitae eros hendrerit pellentesque. Ut varius blandit mauris at bibendum. Cras tristique tortor ac malesuada imperdiet. In facilisis, sapien vel molestie lacinia, libero ex faucibus elit, eu fringilla metus felis eu odio. Vestibulum faucibus, leo ut porttitor bibendum, enim ipsum auctor ante, eu bibendum nunc tellus eget nisi. Fusce et sapien eu augue dictum volutpat non non turpis. Vivamus at elementum nibh, a aliquam nibh. Fusce eget bibendum erat. Donec pretium, arcu a dignissim laoreet, sapien purus dapibus nisi, et finibus justo est in odio.",
-      style: TextStyle(color: Colors.white,),
-    ),
-    ),
-    SingleChildScrollView(
-    padding: EdgeInsets.all(16),
-    child: Text(
-    "Sed suscipit bibendum turpis, non eleifend enim malesuada vel. Vivamus nec mauris nec sem sollicitudin pharetra a a eros. Nam bibendum, lectus vel bibendum faucibus, ex purus commodo massa, ac maximus quam mi eu",
-      style: TextStyle(color: Colors.white,),),
-    ),
-    ]
-    )
-    )
-    )
+        body: DefaultTabController(
+            length: 2,
+            child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Image.network(
+                          "https://mobimg.b-cdn.net/v3/fetch/c5/c5e459323542642105ab322fa6d6060c.jpeg",
+                          fit: BoxFit.cover,
+                          height: 200,
+                        ),
+                        Container(
+
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/img_1.png"),
+                              fit: BoxFit.cover,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.grey,
+                                BlendMode.darken,
+                              ),
+                            ),
+                          ),
+                          margin: EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.network(
+                                gameImage ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
+                                height: 100,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+
+                                      gameName ?? "Jeu XYZ",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'proxima',
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(gameDev ?? "dev",
+                                      style: TextStyle(fontFamily: 'proxima',
+                                      color: Colors.white,),),
+                                    Text("Price",style: TextStyle(fontFamily: 'proxima',
+                                      color: Colors.white,),),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TabBar(
+                          tabs: [
+                            Tab(
+                              text: "Description",
+                            ),
+                            Tab(
+                              text: "Avis",
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                body: TabBarView(
+                    children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          gameDescription ?? "Description",
+                          style: TextStyle(color: Colors.white,),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          "Sed suscipit bibendum turpis, non eleifend enim malesuada vel. Vivamus nec mauris nec sem sollicitudin pharetra a a eros. Nam bibendum, lectus vel bibendum faucibus, ex purus commodo massa, ac maximus quam mi eu",
+                          style: TextStyle(color: Colors.white,),),
+                      ),
+                    ]
+                )
+            )
+        )
+    );
+        },
     );
   }
 }
