@@ -16,39 +16,93 @@ class _GameDetailState extends State<GameDetail> {
   bool isLike = false;
   bool isWish = false;
 
-  void toggleLike() {
+
+  void initState() {
+    super.initState();
+    checkLikedGames().then((value) {
+      setState(() {
+        isLike = value;
+      });
+    });
+    checkWishedGames().then((value) {
+      setState(() {
+        isWish = value;
+      });
+    });
+
+  }
+
+
+  Future<bool> checkLikedGames() async {
+    CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+
+    DocumentSnapshot doc = await usersRef.doc(userId).get();
+
+    if (doc.exists) {
+      List<dynamic> likedGames = doc.get('likedGames');
+
+      return likedGames.contains(widget.appId);
+    }
+
+    return false;
+  }
+
+  Future<bool> checkWishedGames() async {
+    CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+
+    DocumentSnapshot doc = await usersRef.doc(userId).get();
+
+    if (doc.exists) {
+      List<dynamic> wishedGames = doc.get('wishedGames');
+
+      return wishedGames.contains(widget.appId);
+    }
+
+    return false;
+  }
+
+
+  void toggleLike() async {
     setState(() {
       isLike = !isLike;
     });
+
+    CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+
+    if (isLike) {
+      await usersRef.doc(userId).update({
+        'likedGames': FieldValue.arrayUnion([widget.appId]),
+      });
+    } else {
+      await usersRef.doc(userId).update({
+        'likedGames': FieldValue.arrayRemove([widget.appId]),
+      });
+    }
   }
 
-  void toggleWish() {
+
+  void toggleWish() async {
     setState(() {
       isWish = !isWish;
     });
+
+    CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+
+    if (isWish) {
+      await usersRef.doc(userId).update({
+        'wishedGames': FieldValue.arrayUnion([widget.appId]),
+      });
+    } else {
+      await usersRef.doc(userId).update({
+        'wishedGames': FieldValue.arrayRemove([widget.appId]),
+      });
+    }
   }
   @override
-  /*Widget build(BuildContext context) {
-    CollectionReference gamesRef = FirebaseFirestore.instance.collection('games');
-
-    DocumentReference gameDocRef = gamesRef.doc('730');
-    String gameName = "C'est vide" ;
-    String gameImage = "Chargement en cours...";
-
-    gameDocRef.get().then((doc) {
-      if (doc != null && doc.exists) {
-        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-        if (data != null) {
-          setState(() {
-            gameName = data['name'] ?? "";
-            gameImage = data['image'] ?? "";
-          });
-        }
-      }
-
-    }
-    );
-    print(gameName);*/
 
     Widget build(BuildContext context) {
       CollectionReference gamesRef = FirebaseFirestore.instance.collection('games');

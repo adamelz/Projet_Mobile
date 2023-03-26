@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/models/user.dart';
 import 'package:projetmobile/screens/Accueil.dart';
 import 'package:projetmobile/screens/Inscription.dart';
+import 'package:projetmobile/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projetmobile/services/api_service.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 Future<void> main() async {
@@ -23,6 +25,19 @@ Future<void> main() async {
   await fetchData2();
 
   runApp(MyApp());
+
+  //A tester
+  /*runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Users>(
+          create: (_) => Users(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );*/
+
 }
 
 class MyApp extends StatelessWidget {
@@ -54,7 +69,7 @@ class _LoginDemoState extends State<LoginDemo> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future<void> _handleSignIn() async {
+  Future<void> _handleSignIn(BuildContext context) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -64,6 +79,7 @@ class _LoginDemoState extends State<LoginDemo> {
         password: password,
       );
       print('User ${userCredential.user?.uid} signed in');
+      Provider.of<Users>(context, listen: false).setUid(userCredential.user?.uid); // recupére l'ID de l'utilisateur
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => HomePage()),
@@ -156,7 +172,7 @@ class _LoginDemoState extends State<LoginDemo> {
                   borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: () async {
-                  _handleSignIn();
+                  _handleSignIn(context);
 
                 },
                 child: Text(

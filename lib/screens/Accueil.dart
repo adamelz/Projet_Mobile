@@ -1,14 +1,12 @@
 import 'dart:ui';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Gamedetail.dart';
 import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
-import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:provider/provider.dart';
+import '../models/user.dart';
 import '../services/api_service.dart';
 
 
@@ -21,25 +19,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
 
-
   @override
   Widget build(BuildContext context) {
+
+    //A tester
+
+   /* final userProvider = Provider.of<Users>(context);
+    final uid = userProvider.uid;*/
 
     return Scaffold(
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
         backgroundColor:Color(0xFF1E262C) ,
+
+        //A tester
+        //title: Text('User ID: $uid'),
+
+
         title: Text("Accueil"),
         actions: [
           IconButton(
             icon: SvgPicture.asset('assets/icons/like.svg'),
-            onPressed: ()  { Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MyLikesPage()));},
+            onPressed: ()  {
+
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => UserLikedGames(userId: 'oQSrgQpSPjYi1tQ51rL0jLezztC2',)));
+              // a modifier avec le bon userID
+              },
+
           ),
           IconButton(
             icon: SvgPicture.asset('assets/icons/whishlist.svg'),
             onPressed: () { Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MyWishlist()));},
+                context, MaterialPageRoute(builder: (_) => MyWishlist(userId: 'oQSrgQpSPjYi1tQ51rL0jLezztC2')));},
+            // a modifier avec le bon userID
           ),
         ],
       ),
@@ -92,8 +105,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 8),
                   TextButton(
-                    onPressed: () { /*Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => GameDetail()));*/},
+                    onPressed: () { Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: '730')));
+                      },
                     child: Text(
                       'En savoir plus',
                       style: TextStyle(color: Colors.white),
@@ -160,10 +174,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
 
                                   child: Image.network( game?['image'], fit: BoxFit.cover),
-                                  //child: Image.network("https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81rQIeGFJHL._AC_SX425_.jpg", fit: BoxFit.cover),
                                   ),
                                  title: Text(game?['name'] + '\n' + game?['developer']),textColor: Colors.white,
-                                //title: Text("Nom du jeu \nNom de l'éditeur"),textColor: Colors.white,
                                 subtitle: Text("Prix: 10e"),
                                 trailing: Container(
                                   height: 70,
@@ -173,8 +185,6 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: TextButton(
                                     onPressed: () {
-                                      /*Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: game?['appId'])));},*/
 
                                           String? id = game?['appid'].toString();
 
