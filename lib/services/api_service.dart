@@ -49,6 +49,10 @@ Future<void> fetchData2() async {
     final background = data['${game.appid}']['data']['background'];
     final developer = data['${game.appid}']['data']['developers'][0];
     final description = data['${game.appid}']['data']['short_description'];
+    final free = data['${game.appid}']['data']['is_free'];
+    final price = data['${game.appid}']['data']['price_overview'] != null ? data['${game.appid}']['data']['price_overview']['final_formatted'] : 'N/A';
+
+
 
     // Ajouter les nouveaux champs à chaque document de la collection "games"
     collectionReference.doc(game.appid.toString()).update({
@@ -57,6 +61,8 @@ Future<void> fetchData2() async {
       'background': background,
       'developer': developer,
       'description': description,
+      'price': free == true ? 'Gratuit' : price,
+
     });
   });
 }

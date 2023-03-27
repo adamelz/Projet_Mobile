@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                                   child: Image.network( game?['image'], fit: BoxFit.cover),
                                   ),
                                  title: Text(game?['name'] + '\n' + game?['developer']),textColor: Colors.white,
-                                subtitle: Text("Prix: 10e"),
+                                subtitle: Text(game?['price']),
                                 trailing: Container(
                                   height: 70,
                                   width: 75,

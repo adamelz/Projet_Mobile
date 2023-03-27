@@ -79,7 +79,7 @@ class _LoginDemoState extends State<LoginDemo> {
         password: password,
       );
       print('User ${userCredential.user?.uid} signed in');
-      Provider.of<Users>(context, listen: false).setUid(userCredential.user?.uid); // recupére l'ID de l'utilisateur
+      //Provider.of<Users>(context, listen: false).setUid(userCredential.user?.uid); // recupére l'ID de l'utilisateur
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => HomePage()),

@@ -113,6 +113,8 @@ class _GameDetailState extends State<GameDetail> {
       String gameImage = "Chargement en cours...";
       String gameDescription = "Chargement en cours...";
       String gameDev = "Chargement en cours...";
+      String gamePrice = "Chargement en cours...";
+
 
       return FutureBuilder<DocumentSnapshot>(
         future: gameDocRef.get(),
@@ -136,6 +138,8 @@ class _GameDetailState extends State<GameDetail> {
               gameImage = data['image'] ?? "";
               gameDescription = data['description'] ?? "";
               gameDev = data['developer'] ?? "";
+              gamePrice = data['price'] ?? "";
+
             }
           }
 
