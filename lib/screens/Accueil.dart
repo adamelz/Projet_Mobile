@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import '../models/user.dart';
 import '../services/api_service.dart';
+import 'package:projetmobile/screens/recherche.dart';
+
 
 
 
@@ -26,10 +28,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    //A tester
+    final TextEditingController _searchController = TextEditingController();
 
-   /* final userProvider = Provider.of<Users>(context);
-    final uid = userProvider.uid;*/
 
     return WillPopScope(
       onWillPop: () async {
@@ -76,12 +76,22 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: "Rechercher un jeu...",
                 hintStyle: TextStyle(color: Colors.white,fontFamily:'Proxima'),
                 suffixIcon: Icon(Icons.search, color: Colors.deepPurple,),
                 border: OutlineInputBorder(),
               ),
+              onSubmitted: (valeur) {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SteamSearch(value: valeur,),
+                  ),
+                );
+              },
             ),
           ),
           Container(
@@ -168,10 +178,10 @@ class _HomePageState extends State<HomePage> {
                     stream: FirebaseFirestore.instance.collection('games').snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        final games = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+                        var games = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+                        games = games.where((game) => game['rank'] > 0).toList(); // Exclure les jeux avec un rank de 0
                         games.sort((a, b) => a['rank'].compareTo(b['rank']));
                         return ListView.builder(
-                          itemCount: games.length,
                           itemBuilder: (context, index) {
                             final game = games[index] != null? games[index] : null;
 
