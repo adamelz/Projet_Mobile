@@ -5,8 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class GameDetail extends StatefulWidget {
 
   late final String? appId;
+  final String userid;
 
-  GameDetail({required this.appId});
+  GameDetail({required this.appId, required this.userid});
 
   @override
   _GameDetailState createState() => _GameDetailState();
@@ -35,7 +36,7 @@ class _GameDetailState extends State<GameDetail> {
 
   Future<bool> checkLikedGames() async {
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
 
     DocumentSnapshot doc = await usersRef.doc(userId).get();
 
@@ -50,7 +51,7 @@ class _GameDetailState extends State<GameDetail> {
 
   Future<bool> checkWishedGames() async {
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
 
     DocumentSnapshot doc = await usersRef.doc(userId).get();
 
@@ -70,7 +71,7 @@ class _GameDetailState extends State<GameDetail> {
     });
 
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
 
     if (isLike) {
       await usersRef.doc(userId).update({
@@ -90,7 +91,7 @@ class _GameDetailState extends State<GameDetail> {
     });
 
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = "oQSrgQpSPjYi1tQ51rL0jLezztC2"; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
 
     if (isWish) {
       await usersRef.doc(userId).update({
@@ -211,7 +212,7 @@ class _GameDetailState extends State<GameDetail> {
                                     Text(gameDev ?? "dev",
                                       style: TextStyle(fontFamily: 'proxima',
                                       color: Colors.white,),),
-                                    Text("Price",style: TextStyle(fontFamily: 'proxima',
+                                    Text(gamePrice ?? "Price",style: TextStyle(fontFamily: 'proxima',
                                       color: Colors.white,),),
                                   ],
                                 ),

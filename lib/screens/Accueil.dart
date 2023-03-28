@@ -6,12 +6,16 @@ import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import '../main.dart';
 import '../models/user.dart';
 import '../services/api_service.dart';
 
 
 
 class HomePage extends StatefulWidget {
+  final String userid;
+  HomePage({required this.userid});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -27,7 +31,14 @@ class _HomePageState extends State<HomePage> {
    /* final userProvider = Provider.of<Users>(context);
     final uid = userProvider.uid;*/
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginDemo()));
+        return true;
+      },
+
+
+    child: Scaffold(
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
         backgroundColor:Color(0xFF1E262C) ,
@@ -38,12 +49,12 @@ class _HomePageState extends State<HomePage> {
 
         title: Text("Accueil"),
         actions: [
-          IconButton(
+           IconButton(
             icon: SvgPicture.asset('assets/icons/like.svg'),
             onPressed: ()  {
 
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => UserLikedGames(userId: 'oQSrgQpSPjYi1tQ51rL0jLezztC2',)));
+                  context, MaterialPageRoute(builder: (_) => UserLikedGames(userId: widget.userid,)));
               // a modifier avec le bon userID
               },
 
@@ -51,11 +62,12 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: SvgPicture.asset('assets/icons/whishlist.svg'),
             onPressed: () { Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MyWishlist(userId: 'oQSrgQpSPjYi1tQ51rL0jLezztC2')));},
+                context, MaterialPageRoute(builder: (_) => MyWishlist(userId: widget.userid)));},
             // a modifier avec le bon userID
           ),
         ],
       ),
+
 
 
 
@@ -106,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 8),
                   TextButton(
                     onPressed: () { Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: '730')));
+                        context, MaterialPageRoute(builder: (_) => GameDetail(appId: '730', userid: widget.userid)));
                       },
                     child: Text(
                       'En savoir plus',
@@ -189,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                           String? id = game?['appid'].toString();
 
                                       Navigator.push(
-                                       context, MaterialPageRoute(builder: (_) => GameDetail(appId: id)));},
+                                       context, MaterialPageRoute(builder: (_) => GameDetail(appId: id,userid: widget.userid)));},
 
                                     child: Text(
                                       'En savoir plus',textAlign: TextAlign.center,
@@ -217,5 +229,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
+    ),
     );
   }}

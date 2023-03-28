@@ -82,7 +82,7 @@ class _LoginDemoState extends State<LoginDemo> {
       //Provider.of<Users>(context, listen: false).setUid(userCredential.user?.uid); // recupére l'ID de l'utilisateur
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => HomePage()),
+        MaterialPageRoute(builder: (_) => HomePage(userid: userCredential.user?.uid ?? '')),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

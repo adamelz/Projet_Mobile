@@ -71,13 +71,13 @@ class MyWishlist extends StatelessWidget {
                           leading: Image.network(gameImage),
                           onTap: () {
                             Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId)));
+                                context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
                           },
                           trailing: TextButton(
 
                             onPressed: () {
                               Navigator.push(
-                                  context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId)));},
+                                  context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));},
 
                             child: Text(
                               'En savoir plus',textAlign: TextAlign.center,

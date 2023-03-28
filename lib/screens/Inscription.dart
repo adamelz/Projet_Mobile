@@ -42,7 +42,11 @@ class _InscriptionState extends State<Inscription> {
           'email': _emailController.text,
           'password': _passwordController.text,
         });
-        Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+       // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => HomePage(userid: userCredential.user?.uid ?? '')),
+        );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
