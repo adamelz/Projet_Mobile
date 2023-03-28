@@ -107,6 +107,18 @@ class SteamSearchState extends State<SteamSearch> {
                               Navigator.push(
                                   context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: widget.userId)));
                             },
+                            trailing: TextButton(
+
+                              onPressed: () {
+                                Navigator.push(
+                                    context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId,userid: widget.userId)));},
+
+                              child: Text(
+                                'En savoir plus',textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
+
+                              ),
+                            ),
                           );
                         }
                       }
