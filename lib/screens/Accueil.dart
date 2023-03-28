@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SteamSearch(value: valeur,),
+                    builder: (context) => SteamSearch(value: valeur, userId: widget.userid),
                   ),
                 );
               },
