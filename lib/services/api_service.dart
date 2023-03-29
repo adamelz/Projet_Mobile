@@ -62,7 +62,6 @@ Future<void> fetchData2() async {
       'developer': developer,
       'description': description,
       'price': free == true ? 'Gratuit' : price,
-
     });
   });
 }

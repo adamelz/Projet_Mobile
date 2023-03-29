@@ -41,8 +41,27 @@ class _InscriptionState extends State<Inscription> {
           'username': _usernameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
+          'likedGames': [],
+          'wishedGames': []
         });
-       // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text("Succès"),
+            content: Text("Le compte a été créé avec succès!"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+
+        // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => HomePage(userid: userCredential.user?.uid ?? '')),
