@@ -86,8 +86,24 @@ class _LoginDemoState extends State<LoginDemo> {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('Utilisateur inconnue');
-      } else if (e.code == 'wrong-password') {
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Utilisateur introuvable'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }  else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
     }

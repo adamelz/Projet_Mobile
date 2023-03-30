@@ -5,13 +5,9 @@ import 'package:projetmobile/screens/Gamedetail.dart';
 import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 import '../main.dart';
-import '../models/user.dart';
 import '../services/api_service.dart';
 import 'package:projetmobile/screens/recherche.dart';
-
-
 
 
 class HomePage extends StatefulWidget {
