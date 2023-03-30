@@ -24,6 +24,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  bool _isLoading = true;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class _HomePageState extends State<HomePage> {
 
 
     child: Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
         backgroundColor:Color(0xFF1E262C) ,
@@ -167,6 +171,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          ),
+
+          Visibility(
+            visible: _isLoading,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
 
           Expanded(
