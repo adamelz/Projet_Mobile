@@ -187,7 +187,7 @@ class _GameDetailState extends State<GameDetail> {
                       child: Stack(
                           children: [
                         Image.network(
-                            gameBackgroung ,
+                            gameBackgroungRAW ,
                           fit: BoxFit.cover,
                           height: 250,
                         ),
