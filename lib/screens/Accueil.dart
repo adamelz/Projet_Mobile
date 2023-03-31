@@ -6,7 +6,6 @@ import 'package:projetmobile/screens/Mes likes.dart';
 import 'package:projetmobile/screens/Wishlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../main.dart';
-import '../services/api_service.dart';
 import 'package:projetmobile/screens/recherche.dart';
 
 
@@ -20,13 +19,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  bool _isLoading = true;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _searchController = TextEditingController();
 
 
     return WillPopScope(
@@ -220,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                           subtitle: Text(
                             game['price'],
                             style: TextStyle(color: Colors.white,
-                              fontSize: 10,
+                              fontSize: 11,
                               decoration: TextDecoration.underline,),
                           ),
                           trailing: Container(

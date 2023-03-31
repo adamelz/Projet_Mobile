@@ -1,11 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projetmobile/models/user.dart';
 import 'package:projetmobile/screens/Accueil.dart';
-import 'package:projetmobile/screens/Inscription.dart';
-import 'package:projetmobile/models/user.dart';
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Inscription extends StatefulWidget {

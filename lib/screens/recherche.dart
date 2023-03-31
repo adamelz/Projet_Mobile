@@ -80,8 +80,30 @@ class SteamSearchState extends State<SteamSearch> {
           future: search(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+
+                if (snapshot.data!.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/warning.svg',width: 100, // définir la largeur souhaitée
+                          height: 100, // définir la hauteur souhaitée
+                        ),
+                        SizedBox(height: 20.0),
+                        Text(
+                          "Aucuns jeu n'est disponible à ce nom.\n Veuillez renter une nouvelle recherche",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16.0, color: Colors.white,fontFamily:'Proxima'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+
               // Récupérer les données de chaque jeu souhaité à partir de Firebase Firestore
               return ListView.builder(
+                padding: EdgeInsets.only(top: 10.0), // Ajouter un Padding en haut
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   String gameId = snapshot.data![index]['appid'].toString();
@@ -98,26 +120,78 @@ class SteamSearchState extends State<SteamSearch> {
                           String gameName = data['name'] ?? "";
                           String gameImage = data['image'] ?? "";
                           String gameDev = data['developer'] ?? "";
+                          String gameback = data['background'] ?? "";
+                          String gamePrice = data['price'] ?? "";
 
-                          return ListTile(
-                            title: Text(gameName, style: TextStyle(color: Colors.white)),
-                            subtitle: Text(gameDev, style: TextStyle(color: Colors.white)),
-                            leading: Image.network(gameImage),
-                            onTap: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: widget.userId)));
-                            },
-                            trailing: TextButton(
+                          return Container (
+                            margin: EdgeInsets.only(bottom: 10.0,left: 10.0,  right: 10.0),
 
-                              onPressed: () {
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId,userid: widget.userId)));},
-
-                              child: Text(
-                                'En savoir plus',textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
-
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(gameback),
+                                fit: BoxFit.cover,
                               ),
+                            ),
+
+                            child: ListTile(
+                              leading: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minWidth: 44,
+                                  minHeight: 44,
+                                  maxWidth: 128,
+                                  maxHeight: 128,
+                                ),
+                                child: Image.network(
+                                    gameImage, fit: BoxFit.cover),
+                              ),
+                              title: Text(
+                                gameName + '\n' + gameDev + '\n',
+                                style: TextStyle(color: Colors.white,
+                                  fontSize: 13,),
+                              ),
+                              subtitle: Text(
+                                gamePrice,
+                                style: TextStyle(color: Colors.white,
+                                  fontSize: 11,
+                                  decoration: TextDecoration.underline,),
+                              ),
+                              // leading: Image.network(gameImage),
+                              /*onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
+                        },*/
+
+                              trailing: Container(
+                                height: 70,
+                                width: 75,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF636af6),
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    String? id = gameId.toString();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            GameDetail(
+                                                appId: id, userid: widget.userId),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'En savoir plus',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontFamily: 'Proxima',
+                                    ),
+                                  ),
+                                ),
+                              ),
+
                             ),
                           );
                         }

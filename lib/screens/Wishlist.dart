@@ -97,14 +97,9 @@ class MyWishlist extends StatelessWidget {
                             subtitle: Text(
                               gamePrice,
                               style: TextStyle(color: Colors.white,
-                                fontSize: 10,
+                                fontSize: 11,
                                 decoration: TextDecoration.underline,),
                             ),
-                            // leading: Image.network(gameImage),
-                            /*onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
-                        },*/
 
                             trailing: Container(
                               height: 70,

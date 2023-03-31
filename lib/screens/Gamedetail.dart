@@ -182,7 +182,7 @@ class _GameDetailState extends State<GameDetail> {
                       child: Stack(
                           children: [
                         Image.network(
-                            gameBackgroungRAW ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
+                            gameBackgroungRAW ,
                           fit: BoxFit.cover,
                           height: 250,
                         ),
@@ -193,7 +193,7 @@ class _GameDetailState extends State<GameDetail> {
                         Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(gameBackgroung ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg"),
+                              image: NetworkImage(gameBackgroung),
                               fit: BoxFit.cover,
                               colorFilter: const ColorFilter.mode(
                                 Colors.grey,
@@ -209,7 +209,7 @@ class _GameDetailState extends State<GameDetail> {
                             children: [
                              Image.network(
 
-                                gameImage ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
+                                gameImage ,
                                 height: 100,
                               ),
                               SizedBox(width: 10),
@@ -220,7 +220,7 @@ class _GameDetailState extends State<GameDetail> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 8.0),
                                       child: Text(
-                                        gameName ?? "Jeu XYZ",
+                                        gameName ,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
@@ -229,10 +229,10 @@ class _GameDetailState extends State<GameDetail> {
                                         ),
                                       ),
                                     ),
-                                    Text(gameDev ?? "dev",
+                                    Text(gameDev ,
                                       style: TextStyle(fontFamily: 'proxima',
                                         color: Colors.white,),),
-                                    Text('\n' + gamePrice ?? "Price",style: TextStyle(fontFamily: 'proxima',
+                                    Text('\n' + gamePrice ,style: TextStyle(fontFamily: 'proxima',
                                       color: Colors.white,decoration: TextDecoration.underline,),),
                                   ],
                                 ),
@@ -266,7 +266,7 @@ class _GameDetailState extends State<GameDetail> {
                       SingleChildScrollView(
                         padding: EdgeInsets.all(16),
                         child: Text(
-                          gameDescription ?? "Description",
+                          gameDescription ,
                           style: TextStyle(color: Colors.white,fontFamily:'Proxima'),
                         ),
                       ),
