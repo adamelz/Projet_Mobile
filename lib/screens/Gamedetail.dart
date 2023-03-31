@@ -122,6 +122,11 @@ class _GameDetailState extends State<GameDetail> {
       return FutureBuilder<DocumentSnapshot>(
         future: gameDocRef.get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.hasError) {
             return Text("Une erreur est survenue: ${snapshot.error}");
           }
@@ -182,7 +187,7 @@ class _GameDetailState extends State<GameDetail> {
                       child: Stack(
                           children: [
                         Image.network(
-                            gameBackgroungRAW ,
+                            gameBackgroung ,
                           fit: BoxFit.cover,
                           height: 250,
                         ),
