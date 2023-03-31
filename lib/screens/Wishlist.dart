@@ -46,6 +46,7 @@ class MyWishlist extends StatelessWidget {
             }
 
             return ListView.builder(
+              padding: EdgeInsets.only(top: 10.0), // Ajouter un Padding en haut
               itemCount: wishedGames.length,
               itemBuilder: (BuildContext context, int index) {
                 String gameId = wishedGames[index];
@@ -64,26 +65,78 @@ class MyWishlist extends StatelessWidget {
                         String gameImage = data['image'] ?? "";
                         String gameDescription = data['description'] ?? "";
                         String gameDev = data['developer'] ?? "";
+                        String gameback = data['background'] ?? "";
+                        String gamePrice = data['price'] ?? "";
 
-                        return ListTile(
-                          title: Text(gameName, style: TextStyle(color: Colors.white)),
-                          subtitle: Text(gameDev, style: TextStyle(color: Colors.white)),
-                          leading: Image.network(gameImage),
-                          onTap: () {
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
-                          },
-                          trailing: TextButton(
+                        return Container (
+                          margin: EdgeInsets.only(bottom: 10.0,left: 10.0,  right: 10.0),
 
-                            onPressed: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));},
-
-                            child: Text(
-                              'En savoir plus',textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 12,fontFamily:'Proxima'),
-
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(gameback),
+                              fit: BoxFit.cover,
                             ),
+                          ),
+
+                          child: ListTile(
+                            leading: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minWidth: 44,
+                                minHeight: 44,
+                                maxWidth: 128,
+                                maxHeight: 128,
+                              ),
+                              child: Image.network(
+                                  gameImage, fit: BoxFit.cover),
+                            ),
+                            title: Text(
+                              gameName + '\n' + gameDev + '\n',
+                              style: TextStyle(color: Colors.white,
+                                fontSize: 13,),
+                            ),
+                            subtitle: Text(
+                              gamePrice,
+                              style: TextStyle(color: Colors.white,
+                                fontSize: 10,
+                                decoration: TextDecoration.underline,),
+                            ),
+                            // leading: Image.network(gameImage),
+                            /*onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
+                        },*/
+
+                            trailing: Container(
+                              height: 70,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF636af6),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  String? id = gameId.toString();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          GameDetail(
+                                              appId: id, userid: userId),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'En savoir plus',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontFamily: 'Proxima',
+                                  ),
+                                ),
+                              ),
+                            ),
+
                           ),
                         );
                       }

@@ -71,8 +71,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
 
-
-        body: Column(
+    body: Column(
           children: [
             SingleChildScrollView(
               child: Form(
@@ -162,6 +161,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Align(
@@ -178,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
             Expanded(
               child: FutureBuilder(
                 future: _fetchData(),
@@ -185,28 +186,42 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     var games = snapshot.data as List<Map<String, dynamic>>;
                     return ListView.builder(
+
                       itemCount: games.length,
                       itemBuilder: (context, index) {
                         final game = games[index];
 
-                        return ListTile(
+
+                        return Container(
+
+                          margin: EdgeInsets.only(bottom: 10.0,left: 10.0,  right: 10.0),
+                            decoration: BoxDecoration(
+                            image: DecorationImage(
+                            image: NetworkImage(game['background']),
+                        fit: BoxFit.cover,
+                        ),
+                        ),
+                        child: ListTile(
                           leading: ConstrainedBox(
                             constraints: BoxConstraints(
                               minWidth: 44,
                               minHeight: 44,
-                              maxWidth: 64,
-                              maxHeight: 64,
+                              maxWidth: 128,
+                              maxHeight: 128,
                             ),
                             child: Image.network(
                                 game['image'], fit: BoxFit.cover),
                           ),
                           title: Text(
-                            game['name'] + '\n' + game['developer'],
-                            style: TextStyle(color: Colors.white),
+                            game['name'] + '\n' + game['developer' ] + '\n',
+                            style: TextStyle(color: Colors.white,
+                              fontSize: 13,),
                           ),
                           subtitle: Text(
                             game['price'],
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white,
+                              fontSize: 10,
+                              decoration: TextDecoration.underline,),
                           ),
                           trailing: Container(
                             height: 70,
@@ -238,6 +253,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+                        ),
                         );
                       },
                     );
@@ -249,6 +265,8 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
+
+
       ),
     );
   }

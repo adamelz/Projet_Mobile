@@ -112,6 +112,8 @@ class _GameDetailState extends State<GameDetail> {
       DocumentReference gameDocRef = gamesRef.doc(widget.appId);
       String gameName = "Chargement en cours..." ;
       String gameImage = "Chargement en cours...";
+      String gameBackgroung = "Chargement en cours...";
+      String gameBackgroungRAW = "Chargement en cours...";
       String gameDescription = "Chargement en cours...";
       String gameDev = "Chargement en cours...";
       String gamePrice = "Chargement en cours...";
@@ -138,6 +140,8 @@ class _GameDetailState extends State<GameDetail> {
               gameName = data['name'] ?? "";
               gameImage = data['image'] ?? "";
               gameDescription = data['description'] ?? "";
+              gameBackgroung = data['background'] ?? "";
+              gameBackgroungRAW = data['background_raw'] ?? "";
               gameDev = data['developer'] ?? "";
               gamePrice = data['price'] ?? "";
 
@@ -161,6 +165,8 @@ class _GameDetailState extends State<GameDetail> {
             ),
           ],
         ),
+
+
         body: DefaultTabController(
             length: 2,
             child: NestedScrollView(
@@ -169,16 +175,25 @@ class _GameDetailState extends State<GameDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Image.network(
-                          "https://mobimg.b-cdn.net/v3/fetch/c5/c5e459323542642105ab322fa6d6060c.jpeg",
-                          fit: BoxFit.cover,
-                          height: 200,
-                        ),
-                        Container(
 
+                      Container(
+                      height: 300,
+                        //padding: EdgeInsets.only(bottom: 16.0), // Add padding to the bottom
+                      child: Stack(
+                          children: [
+                        Image.network(
+                            gameBackgroungRAW ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
+                          fit: BoxFit.cover,
+                          height: 250,
+                        ),
+                        Positioned(
+                        bottom: -20,
+                          left: 10,
+                          child:
+                        Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("assets/images/img_1.png"),
+                              image: NetworkImage(gameBackgroung ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg"),
                               fit: BoxFit.cover,
                               colorFilter: const ColorFilter.mode(
                                 Colors.grey,
@@ -187,10 +202,13 @@ class _GameDetailState extends State<GameDetail> {
                             ),
                           ),
                           margin: EdgeInsets.all(16),
+                          height: 100, // ajout de la propriété height
+                          width: 360, // ajout de la propriété width
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.network(
+                             Image.network(
+
                                 gameImage ?? "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zk93c4ZoL._AC_SL1500_.jpg",
                                 height: 100,
                               ),
@@ -199,37 +217,46 @@ class _GameDetailState extends State<GameDetail> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-
-                                      gameName ?? "Jeu XYZ",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'proxima',
-                                        color: Colors.white,
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        gameName ?? "Jeu XYZ",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'proxima',
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                     Text(gameDev ?? "dev",
                                       style: TextStyle(fontFamily: 'proxima',
-                                      color: Colors.white,),),
-                                    Text(gamePrice ?? "Price",style: TextStyle(fontFamily: 'proxima',
-                                      color: Colors.white,),),
+                                        color: Colors.white,),),
+                                    Text('\n' + gamePrice ?? "Price",style: TextStyle(fontFamily: 'proxima',
+                                      color: Colors.white,decoration: TextDecoration.underline,),),
                                   ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        TabBar(
-                          tabs: [
-                            Tab(
-                              text: "Description",
-                            ),
-                            Tab(
-                              text: "Avis",
-                            ),
-                          ],
                         ),
+                    ],
+                        ),
+                      ),
+
+                        TabBar(
+                      tabs: [
+                        Tab(
+                          text: "Description",
+                        ),
+                        Tab(
+                          text: "Avis",
+                        ),
+                      ],
+                    ),
+
+
                       ],
                     ),
                   ),
@@ -251,6 +278,7 @@ class _GameDetailState extends State<GameDetail> {
                       ),
                     ]
                 )
+
             )
         )
     );

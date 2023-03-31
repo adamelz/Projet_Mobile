@@ -34,14 +34,14 @@ class SteamSearchState extends State<SteamSearch> {
       final newAppIds = results.map((result) => result['appid']).toList();
       final appIdsToAdd = newAppIds.where((newAppId) => !existingAppIds.contains(newAppId)).toList();
       for (var appId in appIdsToAdd) {
-        final appDetailsUrl = 'https://store.steampowered.com/api/appdetails?appids=$appId';
+        final appDetailsUrl = 'https://store.steampowered.com/api/appdetails?appids=$appId&l=english';
         final appDetailsResponse = await http.get(Uri.parse(appDetailsUrl));
         final appDetails = jsonDecode(appDetailsResponse.body);
         final appName = appDetails[appId.toString()]['data']['name'];
         final appImage = appDetails[appId.toString()]['data']['header_image'];
         final appBackground = appDetails[appId.toString()]['data']['background'];
         final appDeveloper = appDetails[appId.toString()]['data']['developers'][0];
-        final appDescription = appDetails[appId.toString()]['data']['short_description'];
+        final appDescription = appDetails[appId.toString()]['data']['detailed_description'];
         final appFree = appDetails[appId.toString()]['data']['is_free'];
         final appPrice = appDetails[appId.toString()]['data']['price_overview'] != null ? appDetails[appId.toString()]['data']['price_overview']['final_formatted'] : 'N/A';
 
