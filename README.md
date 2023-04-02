@@ -1,6 +1,8 @@
 # projetmobile
 
-A new Flutter project.
+Baptiste Bernaud - Adam Elzaim - Hugo Laporte
+
+OCRES 02
 
 ## Getting Started
 
