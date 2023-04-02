@@ -1,18 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projetmobile/models/user.dart';
 import 'package:projetmobile/screens/Accueil.dart';
 import 'package:projetmobile/screens/Inscription.dart';
-import 'package:projetmobile/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projetmobile/services/api_service.dart';
-import 'package:provider/provider.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -22,21 +13,9 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
 
-  await fetchData2();
-
+  await fetchData2(); //On charge les jeux dans la BDD
   runApp(MyApp());
 
-  //A tester
-  /*runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<Users>(
-          create: (_) => Users(),
-        ),
-      ],
-      child: MyApp(),
-    ),
-  );*/
 
 }
 
@@ -64,11 +43,11 @@ class LoginDemo extends StatefulWidget {
 class _LoginDemoState extends State<LoginDemo> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _formKey = GlobalKey<FormState>();
   bool showSignIn = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  //On compare avec les user de la base d'authentification
   Future<void> _handleSignIn(BuildContext context) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -79,14 +58,13 @@ class _LoginDemoState extends State<LoginDemo> {
         password: password,
       );
       print('User ${userCredential.user?.uid} signed in');
-      //Provider.of<Users>(context, listen: false).setUid(userCredential.user?.uid); // recupére l'ID de l'utilisateur
+      //On lance l'app en mémorisant l'ID de l'user
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => HomePage(userid: userCredential.user?.uid ?? '')),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -128,11 +106,7 @@ class _LoginDemoState extends State<LoginDemo> {
                 child: Container(
                     width: 200,
                     height: 50,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Text('Bienvenue !',textAlign: TextAlign.center,style: TextStyle(fontFamily:'Proxima',fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),)),
-
               ),
             ),
             Padding(
@@ -208,7 +182,7 @@ class _LoginDemoState extends State<LoginDemo> {
               child: TextButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Inscription()));
+                      MaterialPageRoute(builder: (_) => Inscription())); //Pas de compte alors aller vers l'inscription
                 },
                 child: Text(
                   'Créer un nouveau compte',

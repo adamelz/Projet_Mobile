@@ -18,6 +18,8 @@ class MyWishlist extends StatelessWidget {
         backgroundColor: Color(0xFF1E262C),
         title: Text("Ma liste de souhaits"),
       ),
+
+
       body: FutureBuilder<DocumentSnapshot>(
         future: usersRef.doc(userId).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -28,6 +30,7 @@ class MyWishlist extends StatelessWidget {
           if (snapshot.hasData && snapshot.data!.exists) {
             List<dynamic> wishedGames = snapshot.data!.get('wishedGames');
 
+            //Si la liste est vide alors message
             if (wishedGames.isEmpty) {
               return Center(
                 child: Column(
@@ -46,7 +49,7 @@ class MyWishlist extends StatelessWidget {
             }
 
             return ListView.builder(
-              padding: EdgeInsets.only(top: 10.0), // Ajouter un Padding en haut
+              padding: EdgeInsets.only(top: 10.0),
               itemCount: wishedGames.length,
               itemBuilder: (BuildContext context, int index) {
                 String gameId = wishedGames[index];
@@ -58,12 +61,12 @@ class MyWishlist extends StatelessWidget {
                       return Text("Une erreur est survenue: ${snapshot.error}");
                     }
 
+                    //On charge les informations lues pour afficher plus bas
                     if (snapshot.hasData && snapshot.data!.exists) {
                       Map<String, dynamic>? data = snapshot.data!.data() as Map<String, dynamic>?;
                       if (data != null) {
                         String gameName = data['name'] ?? "";
                         String gameImage = data['image'] ?? "";
-                        String gameDescription = data['description'] ?? "";
                         String gameDev = data['developer'] ?? "";
                         String gameback = data['background'] ?? "";
                         String gamePrice = data['price'] ?? "";

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../services/api_service.dart';
 import 'Gamedetail.dart';
 
 
@@ -21,6 +20,7 @@ class SteamSearch extends StatefulWidget {
 class SteamSearchState extends State<SteamSearch> {
 
 
+  //On lit l'API et récupère les ID des jeux pour ensuite les ccharger en informations
   Future<List<dynamic>> search() async {
     final url = 'https://steamcommunity.com/actions/SearchApps/${widget.value}';
     final response = await http.get(Uri.parse(url));
@@ -28,7 +28,7 @@ class SteamSearchState extends State<SteamSearch> {
     if (response.statusCode == 200) {
       final results = jsonDecode(response.body);
       final games = FirebaseFirestore.instance.collection('games');
-      final existingAppIds = await games.get().then((snapshot) {
+      final existingAppIds = await games.get().then((snapshot) { //Si ils ne sont pas deja dans la BDD
         return snapshot.docs.map((doc) => doc['appid']).toList();
       });
       final newAppIds = results.map((result) => result['appid']).toList();
@@ -40,6 +40,7 @@ class SteamSearchState extends State<SteamSearch> {
         final appName = appDetails[appId.toString()]['data']['name'];
         final appImage = appDetails[appId.toString()]['data']['header_image'];
         final appBackground = appDetails[appId.toString()]['data']['background'];
+        final appBackgroundRAW = appDetails[appId.toString()]['data']['background_raw'];
         final appDeveloper = appDetails[appId.toString()]['data']['developers'][0];
         final appDescription = appDetails[appId.toString()]['data']['detailed_description'];
         final appFree = appDetails[appId.toString()]['data']['is_free'];
@@ -47,10 +48,11 @@ class SteamSearchState extends State<SteamSearch> {
 
         await games.doc(appId.toString()).set({
           'appid': appId,
-          'rank': 0,
+          'rank': 0, //On met 0 pour pas ne les voir dans la liste des meilleures ventes
           'name': appName,
           'image' : appImage,
           'background': appBackground,
+          'background_raw': appBackgroundRAW,
           'developer': appDeveloper,
           'description': appDescription,
           'price': appFree == true ? 'Gratuit' : appPrice,
@@ -67,8 +69,6 @@ class SteamSearchState extends State<SteamSearch> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
@@ -86,8 +86,7 @@ class SteamSearchState extends State<SteamSearch> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset('assets/icons/warning.svg',width: 100, // définir la largeur souhaitée
-                          height: 100, // définir la hauteur souhaitée
+                        SvgPicture.asset('assets/icons/warning.svg',width: 100,height: 100,
                         ),
                         SizedBox(height: 20.0),
                         Text(
@@ -101,9 +100,9 @@ class SteamSearchState extends State<SteamSearch> {
                 }
 
 
-              // Récupérer les données de chaque jeu souhaité à partir de Firebase Firestore
+              // Récupérer les données de chaque jeu souhaité à partir de  Firestore
               return ListView.builder(
-                padding: EdgeInsets.only(top: 10.0), // Ajouter un Padding en haut
+                padding: EdgeInsets.only(top: 10.0),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   String gameId = snapshot.data![index]['appid'].toString();
@@ -120,7 +119,7 @@ class SteamSearchState extends State<SteamSearch> {
                           String gameName = data['name'] ?? "";
                           String gameImage = data['image'] ?? "";
                           String gameDev = data['developer'] ?? "";
-                          String gameback = data['background'] ?? "";
+                          String gameBack = data['background'] ?? "";
                           String gamePrice = data['price'] ?? "";
 
                           return Container (
@@ -128,7 +127,7 @@ class SteamSearchState extends State<SteamSearch> {
 
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage(gameback),
+                                image: NetworkImage(gameBack),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -155,12 +154,6 @@ class SteamSearchState extends State<SteamSearch> {
                                   fontSize: 11,
                                   decoration: TextDecoration.underline,),
                               ),
-                              // leading: Image.network(gameImage),
-                              /*onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
-                        },*/
-
                               trailing: Container(
                                 height: 70,
                                 width: 75,

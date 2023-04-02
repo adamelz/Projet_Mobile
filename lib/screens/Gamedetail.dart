@@ -17,8 +17,7 @@ class _GameDetailState extends State<GameDetail> {
   bool isLike = false;
   bool isWish = false;
 
-
-  void initState() {
+  void initState() { //Change l'état des valeurs si coché ou non
     super.initState();
     checkLikedGames().then((value) {
       setState(() {
@@ -34,9 +33,9 @@ class _GameDetailState extends State<GameDetail> {
   }
 
 
-  Future<bool> checkLikedGames() async {
+  Future<bool> checkLikedGames() async { //Regarde si le jeu est déjà liké alors ccoeur plein
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid;
 
     DocumentSnapshot doc = await usersRef.doc(userId).get();
 
@@ -49,7 +48,7 @@ class _GameDetailState extends State<GameDetail> {
     return false;
   }
 
-  Future<bool> checkWishedGames() async {
+  Future<bool> checkWishedGames() async { //Regarde si le jeu est déjà liké alors étoile pleine
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
     String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
 
@@ -65,13 +64,13 @@ class _GameDetailState extends State<GameDetail> {
   }
 
 
-  void toggleLike() async {
+  void toggleLike() async { //Ajout du jeu dans les Likes
     setState(() {
       isLike = !isLike;
     });
 
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid;
 
     if (isLike) {
       await usersRef.doc(userId).update({
@@ -85,13 +84,13 @@ class _GameDetailState extends State<GameDetail> {
   }
 
 
-  void toggleWish() async {
+  void toggleWish() async { //Ajout du jeu dans les wish
     setState(() {
       isWish = !isWish;
     });
 
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-    String userId = widget.userid; // Remplacez par l'ID de l'utilisateur connecté
+    String userId = widget.userid;
 
     if (isWish) {
       await usersRef.doc(userId).update({
@@ -108,7 +107,6 @@ class _GameDetailState extends State<GameDetail> {
     Widget build(BuildContext context) {
       CollectionReference gamesRef = FirebaseFirestore.instance.collection('games');
 
-      //DocumentReference gameDocRef = gamesRef.doc('730');
       DocumentReference gameDocRef = gamesRef.doc(widget.appId);
       String gameName = "Chargement en cours..." ;
       String gameImage = "Chargement en cours...";
@@ -131,17 +129,13 @@ class _GameDetailState extends State<GameDetail> {
             return Text("Une erreur est survenue: ${snapshot.error}");
           }
 
-         /* if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Chargement en cours...");
-          }*/
-
           if (snapshot.hasData && !snapshot.data!.exists) {
             return Text("Le document n'existe pas");
           }
 
           if (snapshot.hasData && snapshot.data!.exists) {
             Map<String, dynamic>? data = snapshot.data!.data() as Map<String, dynamic>?;
-            if (data != null) {
+            if (data != null) { //On charge les informations avec la leccture de BDD
               gameName = data['name'] ?? "";
               gameImage = data['image'] ?? "";
               gameDescription = data['description'] ?? "";
@@ -183,7 +177,6 @@ class _GameDetailState extends State<GameDetail> {
 
                       Container(
                       height: 300,
-                        //padding: EdgeInsets.only(bottom: 16.0), // Add padding to the bottom
                       child: Stack(
                           children: [
                         Image.network(
@@ -207,8 +200,8 @@ class _GameDetailState extends State<GameDetail> {
                             ),
                           ),
                           margin: EdgeInsets.all(16),
-                          height: 100, // ajout de la propriété height
-                          width: 360, // ajout de la propriété width
+                          height: 100,
+                          width: 360,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -260,7 +253,6 @@ class _GameDetailState extends State<GameDetail> {
                         ),
                       ],
                     ),
-
 
                       ],
                     ),

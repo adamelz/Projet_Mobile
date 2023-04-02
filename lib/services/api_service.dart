@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,10 +10,10 @@ class Game {
   Game(this.appid, this.rank);
 }
 
-
+//Fonction pour charger des jeux dans une BDD avec la lecture de l'API pour leurs détails
 Future<void> fetchData2() async {
   final response = await http.get(Uri.parse(
-      'https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/'));
+      'https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/'));//Lecture de l'API comme base de travail
 
   final data = json.decode(response.body);
   final List<Game> loadedGames = [];
@@ -22,10 +21,9 @@ Future<void> fetchData2() async {
   data['response']['ranks'].forEach((gameData) {
     final game = Game(gameData['appid'], gameData['rank']);
     loadedGames.add(game);
-    print(game);
   });
 
-  // Enregistrer les données dans Firestore
+  // Enregistrer les données dans Firestore avec ID en nom de document
   final collectionReference = FirebaseFirestore.instance.collection('games');
 
   for (var i = 0; i < loadedGames.length; i++) {
@@ -40,6 +38,7 @@ Future<void> fetchData2() async {
   }
 
   loadedGames.forEach((game) async {
+    //On charge les informations en lisant l'API
     final response = await http.get(Uri.parse(
         'https://store.steampowered.com/api/appdetails?appids=${game.appid}&l=english'));
     final data = json.decode(response.body);
@@ -55,7 +54,7 @@ Future<void> fetchData2() async {
 
 
 
-    // Ajouter les nouveaux champs à chaque document de la collection "games"
+    // Ajouter les nouveaux champs à chaques document de la collection "games"
     collectionReference.doc(game.appid.toString()).update({
       'name': name,
       'image': image,

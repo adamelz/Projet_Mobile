@@ -9,17 +9,14 @@ class Inscription extends StatefulWidget {
 }
 
 class _InscriptionState extends State<Inscription> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _username, _email, _password, _confirmPassword ;
+  String? _username;
+  String ? _email;
+  String? _password;
+  String? _confirmPassword ;
 
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 
   Future<void> _register() async {
@@ -36,8 +33,8 @@ class _InscriptionState extends State<Inscription> {
           'username': _usernameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
-          'likedGames': [],
-          'wishedGames': []
+          'likedGames': [], //On crée pour la suite
+          'wishedGames': [] //On crée pour la suite
         });
 
         showDialog(
@@ -56,7 +53,6 @@ class _InscriptionState extends State<Inscription> {
           ),
         );
 
-        // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => HomePage(userid: userCredential.user?.uid ?? '')),
@@ -99,9 +95,6 @@ class _InscriptionState extends State<Inscription> {
                 child: Container(
                     width: 200,
                     height: 50,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Text('Inscription',textAlign: TextAlign.center,style: TextStyle(fontFamily:'Proxima',fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),)),
 
               ),
@@ -114,14 +107,13 @@ class _InscriptionState extends State<Inscription> {
             SizedBox(height: 50),
 
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
                 controller: _usernameController,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  filled: true, //<-- SEE HERE
+                  filled: true,
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
                     child: Text("Nom d'utilisateur",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
@@ -139,14 +131,13 @@ class _InscriptionState extends State<Inscription> {
 
             SizedBox(height: 20.0),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
                 controller: _emailController,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  filled: true, //<-- SEE HERE
+                  filled: true,
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
                     child: Text("E-mail",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
@@ -163,14 +154,13 @@ class _InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20.0),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 25),
               child:TextFormField(
                 controller: _passwordController,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  filled: true, //<-- SEE HERE
+                  filled: true,
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
                     child: Text("Mot de passe",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
@@ -188,13 +178,12 @@ class _InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20.0),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: TextFormField(
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  filled: true, //<-- SEE HERE
+                  filled: true,
                   fillColor: Color(0xFF1E262C),
                   label: const Center(
                     child: Text("Vérification du mot de passe",style: TextStyle(fontFamily:'Proxima',color: Colors.white),),
@@ -215,7 +204,6 @@ class _InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20.0),
       Padding(
-        //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
         padding: EdgeInsets.symmetric(horizontal: 25),
             child:Container(
               height: 50,
@@ -224,12 +212,7 @@ class _InscriptionState extends State<Inscription> {
                   color: Color(0xFF636af6), borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: ()  {
-
-                 // if (_formKey.currentState!.validate()) {
-
-
                     _register();
-                 // }
                 },
                 child: Text(
                   "S'inscrire",
@@ -237,11 +220,12 @@ class _InscriptionState extends State<Inscription> {
                 ),
               ),
             ),
-      ),
+           ),
           ],
         ),
       ),
     );
-  }}
+  }
+}
 
 

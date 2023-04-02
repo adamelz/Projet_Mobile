@@ -7,12 +7,12 @@ import 'Gamedetail.dart';
 class UserLikedGames extends StatelessWidget {
   late final String userId;
 
+
   UserLikedGames({required this.userId});
 
   @override
   Widget build(BuildContext context) {
     CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-
     return Scaffold(
       backgroundColor: Color(0xFF1E262C),
       appBar: AppBar(
@@ -48,7 +48,7 @@ class UserLikedGames extends StatelessWidget {
 
 
           return ListView.builder(
-            padding: EdgeInsets.only(top: 10.0), // Ajouter un Padding en haut
+            padding: EdgeInsets.only(top: 10.0),
             itemCount: likedGames.length,
             itemBuilder: (BuildContext context, int index) {
               String gameId = likedGames[index];
@@ -65,7 +65,6 @@ class UserLikedGames extends StatelessWidget {
                     if (data != null) {
                       String gameName = data['name'] ?? "";
                       String gameImage = data['image'] ?? "";
-                      String gameDescription = data['description'] ?? "";
                       String gameDev = data['developer'] ?? "";
                       String gameback = data['background'] ?? "";
                       String gamePrice = data['price'] ?? "";
@@ -102,12 +101,6 @@ class UserLikedGames extends StatelessWidget {
                               fontSize: 11,
                               decoration: TextDecoration.underline,),
                           ),
-                       // leading: Image.network(gameImage),
-                        /*onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (_) => GameDetail(appId: gameId, userid: userId)));
-                        },*/
-
                           trailing: Container(
                             height: 70,
                             width: 75,

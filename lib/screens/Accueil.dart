@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projetmobile/screens/Gamedetail.dart';
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
 
-    return WillPopScope(
+    return WillPopScope( //Gérer la décconnexion du user
       onWillPop: () async {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => LoginDemo()));
@@ -39,11 +38,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xFF1E262C),
         appBar: AppBar(
           backgroundColor: Color(0xFF1E262C),
-
-          //A tester
-          //title: Text('User ID: $uid'),
-
-
           title: Text("Accueil"),
           actions: [
             IconButton(
@@ -52,7 +46,6 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context, MaterialPageRoute(
                     builder: (_) => UserLikedGames(userId: widget.userid,)));
-                // a modifier avec le bon userID
               },
 
             ),
@@ -63,7 +56,6 @@ class _HomePageState extends State<HomePage> {
                     context, MaterialPageRoute(
                     builder: (_) => MyWishlist(userId: widget.userid)));
               },
-              // a modifier avec le bon userID
             ),
           ],
         ),
@@ -88,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              SteamSearch(value: valeur, userId: widget.userid),
+                              SteamSearch(value: valeur, userId: widget.userid), //Naviguer en reccherche de jeu
                         ),
                       );
                     },
@@ -110,7 +102,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children: [
                     Text(
                       'CS: GO',
@@ -133,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                             context, MaterialPageRoute(builder: (_) =>
-                            GameDetail(appId: '730', userid: widget.userid)));
+                            GameDetail(appId: '730', userid: widget.userid))); //Redirige vers la page de CS:GO
                       },
                       child: Text(
                         'En savoir plus',
@@ -176,21 +167,19 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            Expanded(
+            Expanded( //Affichage des jeux "meilleures ventes"
               child: FutureBuilder(
                 future: _fetchData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     var games = snapshot.data as List<Map<String, dynamic>>;
-                    return ListView.builder(
 
+                    return ListView.builder(
                       itemCount: games.length,
                       itemBuilder: (context, index) {
                         final game = games[index];
 
-
-                        return Container(
-
+                        return Container( //Définir le component de chaque jeu de la liste
                           margin: EdgeInsets.only(bottom: 10.0,left: 10.0,  right: 10.0),
                             decoration: BoxDecoration(
                             image: DecorationImage(
@@ -269,13 +258,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Map<String, dynamic>>> _fetchData() async {
-    // Fetch data from Firestore
+
     var firestoreGames = await FirebaseFirestore.instance.collection('games').get();
-
     List<Map<String, dynamic>> games = firestoreGames.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-
     games = games.where((game) => game['rank'] > 0).toList();
     games.sort((a, b) => a['rank'].compareTo(b['rank']));
 
     return games;
-  }}
+  }
+}
